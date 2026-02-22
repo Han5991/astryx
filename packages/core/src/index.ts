@@ -8,6 +8,7 @@
  */
 
 // Components
+export * from './CollapsibleGroup';
 export * from './AppShell';
 export * from './AspectRatio';
 export * from './Avatar';
