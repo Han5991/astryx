@@ -13,7 +13,7 @@ const mixedTokens = [
   {value: '#feat', label: '#feature', variant: 'green' as const},
 ];
 
-export default function ChatTokenizedTextShowcase() {
+export default function ChatTokenizedTextColors() {
   return (
     <XDSChatMessageList>
       <XDSChatMessage sender="system">
