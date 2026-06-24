@@ -116,11 +116,21 @@ const styles = stylex.create({
   },
 });
 
-export function TemplatesPreview() {
+export function TemplatesPreview({
+  maxRows,
+}: {
+  /**
+   * Cap the number of thumbnail rows rendered. Defaults to all rows;
+   * pass e.g. 2 to show only the first two rows in a more compact card.
+   */
+  maxRows?: number;
+}) {
+  const rows =
+    maxRows != null ? TEMPLATE_ROWS.slice(0, maxRows) : TEMPLATE_ROWS;
   return (
     <div {...stylex.props(styles.container)} inert>
       <div {...stylex.props(styles.root)}>
-        {TEMPLATE_ROWS.map((row, rowIndex) => (
+        {rows.map((row, rowIndex) => (
           <div
             key={rowIndex}
             {...stylex.props(
