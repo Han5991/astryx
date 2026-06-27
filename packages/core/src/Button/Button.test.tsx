@@ -71,6 +71,32 @@ describe('Button', () => {
     expect(button).toBeDisabled();
   });
 
+  it('sets aria-busy synchronously while clickAction is pending', async () => {
+    // The spinner reveal is visually delayed (CSS animation-delay), but the
+    // loading DOM state — aria-busy and disabled — must not be delayed.
+    const user = userEvent.setup();
+    let resolveAction: (() => void) | undefined;
+    const clickAction = vi.fn(
+      async () =>
+        new Promise<void>(resolve => {
+          resolveAction = resolve;
+        }),
+    );
+    render(<Button label="Save" clickAction={clickAction} />);
+    const button = screen.getByRole('button');
+
+    await user.click(button);
+    expect(button).toHaveAttribute('aria-busy', 'true');
+    expect(button).toBeDisabled();
+
+    await act(async () => {
+      resolveAction?.();
+      await Promise.resolve();
+    });
+    expect(button).not.toHaveAttribute('aria-busy', 'true');
+    expect(button).not.toBeDisabled();
+  });
+
   it('renders the loading spinner with the inherit shade for every variant (#2717)', () => {
     // The spinner must follow the button's resolved foreground color rather
     // than a hardcoded white, so it keeps contrast on themed variants like the
@@ -269,6 +295,59 @@ describe('Button', () => {
 
     await act(async () => {
       resolveAction?.();
+      await Promise.resolve();
+    });
+  });
+
+  it('stays clickable (not disabled) while a clickAction is pending when isInterruptible', async () => {
+    const user = userEvent.setup();
+    let resolveAction: (() => void) | undefined;
+    const clickAction = vi.fn(
+      async () =>
+        new Promise<void>(resolve => {
+          resolveAction = resolve;
+        }),
+    );
+    render(<Button label="Toggle" isInterruptible clickAction={clickAction} />);
+    const button = screen.getByRole('button');
+
+    await user.click(button);
+    // Loading is announced via aria-busy, but the button is not disabled so it
+    // can be re-clicked to interrupt the in-flight action.
+    expect(button).toHaveAttribute('aria-busy', 'true');
+    expect(button).not.toBeDisabled();
+
+    await act(async () => {
+      resolveAction?.();
+      await Promise.resolve();
+    });
+    expect(button).not.toHaveAttribute('aria-busy', 'true');
+    expect(button).not.toBeDisabled();
+  });
+
+  it('re-fires clickAction on re-click while pending when isInterruptible (no dedupe)', async () => {
+    // Unlike the fire-once default, an interruptible action is not deduped: a
+    // re-click while pending starts a fresh action that interrupts the prior.
+    const resolvers: (() => void)[] = [];
+    const clickAction = vi.fn(
+      async () =>
+        new Promise<void>(resolve => {
+          resolvers.push(resolve);
+        }),
+    );
+    render(<Button label="Toggle" isInterruptible clickAction={clickAction} />);
+
+    const button = screen.getByRole('button');
+    await act(async () => {
+      fireEvent.click(button);
+    });
+    await act(async () => {
+      fireEvent.click(button);
+    });
+    expect(clickAction).toHaveBeenCalledTimes(2);
+
+    await act(async () => {
+      resolvers.forEach(resolve => resolve());
       await Promise.resolve();
     });
   });
