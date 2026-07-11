@@ -447,6 +447,36 @@ checks, flag it.
   instead — and whether the breaking change is worth it. (Real case: a new
   required `aria-controls` id on a mobile-nav context forced edits to surfaces
   that didn't otherwise need it.)
+- **Unintended behavior/logic change.** Compare what the diff *actually changes*
+  against what the PR says it does. Flag behavior the author likely didn't mean
+  to touch — a value, default, condition, or output that changed as a side effect
+  of the intended edit and that the description never mentions. This is different
+  from scope contamination (unrelated *files* bundled in); here the collateral
+  change is *inside* the area the author was working on, so it's easy to miss.
+  Watch especially for:
+  - **Design/token changes — judge by presentation impact, not the token type.**
+    When a change touches a token, theme value, or style, reason about **how it
+    renders and where that could break**, not just that a value changed. Ask:
+    does this alter contrast, legibility, or emphasis? Does it change how a value
+    *composites* over other surfaces or in a different theme/mode (a change that
+    looks fine on the one screen the author checked but regresses elsewhere)?
+    Does it shift layout, spacing rhythm, or elevation order? Does it hold in
+    both light and dark, and against every surface the token appears on? The
+    canonical trap: a color that reads fine in isolation but was relied on to
+    layer over other content, so the change silently degrades every place it
+    composites. (One real instance: a theme edit that made a color opaque when
+    other UI depended on it being translucent — fine where the author looked,
+    broken where they didn't.) The principle is general: a design value rarely
+    lives in one place, so weigh the change across everywhere it presents.
+  - **Changed defaults / conditionals** — a default prop value, a comparison
+    (`>=` vs `>`), an early-return, or a guard that changed as a byproduct.
+  - **Generated-output drift** — a regenerated theme CSS / registry / token file
+    whose diff contains changes beyond the intended one.
+  When you spot this, don't assume malice or intent — surface it as a question:
+  "this also changes X (was `a`, now `b`) — does that hold everywhere it's used?"
+  Naming it lets the author confirm or revert. The author being unaware, and
+  having checked only the surface they were working on, is exactly why the
+  reviewer checks the blast radius of a design change.
 - **Other smells.** State expressed by unmounting focusable elements (toggle
   visibility so focus/a11y survive), unnecessary `useState` (prefer derived
   values or refs, especially from interaction handlers), and excessive comments.
