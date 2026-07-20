@@ -75,7 +75,10 @@ function simulateStreamingIncremental(
 // budget). The fastest of a few runs approximates the un-contended cost —
 // a real regression raises the minimum too — so budgets stay tight without
 // flapping. The streaming budget tests below keep a single run: their
-// budgets carry 10x+ headroom, which contention cannot realistically eat.
+// multi-second budgets carry ~4x headroom over the observed CI cost, and
+// each sets an explicit vitest timeout above its budget (see the note on
+// the streaming tests) so the harness cannot kill the test before the
+// budget assertion runs.
 function measureBest<T>(
   runs: number,
   fn: () => T,
