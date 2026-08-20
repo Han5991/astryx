@@ -55,15 +55,6 @@ overrides:
   dompurify: ^3.4.13
   # tsup@8.5 resolves esbuild 0.27.7. Drop when tsup raises its range.
   esbuild: '>=0.28.1'
-  # @modelcontextprotocol/sdk 1.x resolves @hono/node-server ^1, which is
-  # vulnerable to path traversal in serve-static on Windows via encoded
-  # backslashes (%5C). Patched only in 2.0.5 — a semver-major the sdk's ^1
-  # range can never reach on its own. The sdk only calls getRequestListener
-  # (with overrideGlobalObjects), which 2.x exports unchanged. 2.x's own
-  # peerDependency on hono ^4 already holds hono there — no separate hono
-  # floor needed. Drop this entry once the sdk depends on @hono/node-server
-  # 2.x itself.
-  '@hono/node-server': ^2.0.5
   # read-yaml-file 1.x is stuck on js-yaml 3.x (`safeLoad`, no CVE-2026-53550
   # fix), so lift the package: 2.x calls `load` and keeps the same CJS surface.
   # Floored at 4.x, not the 5.x line — 5.x had its own DoS (GHSA-pm4m-ph32-ghv5,

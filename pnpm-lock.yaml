@@ -26,7 +26,6 @@ overrides:
   postcss: ^8.5.23
   dompurify: ^3.4.13
   esbuild: '>=0.28.1'
-  '@hono/node-server': ^2.0.5
   read-yaml-file: ^2.1.0
   read-yaml-file>js-yaml: ^4.3.1
   sharp: ^0.35.3
@@ -159,8 +158,8 @@ importers:
         specifier: ^2.2.0
         version: 2.2.0(react@19.2.7)
       '@modelcontextprotocol/sdk':
-        specifier: ^1.29.0
-        version: 1.29.0(zod@4.4.3)
+        specifier: ^1.30.0
+        version: 1.30.0(zod@4.4.3)
       '@monaco-editor/react':
         specifier: ^4.8.0-rc.3
         version: 4.8.0-rc.3(monaco-editor@0.55.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -184,7 +183,7 @@ importers:
         version: 1.5.0
       mcp-handler:
         specifier: ^1.1.0
-        version: 1.1.0(@modelcontextprotocol/sdk@1.29.0(zod@4.4.3))(next@16.3.0-preview.5(@babel/core@7.29.7)(@playwright/test@1.61.1)(@types/node@25.9.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))
+        version: 1.1.0(@modelcontextprotocol/sdk@1.30.0(zod@4.4.3))(next@16.3.0-preview.5(@babel/core@7.29.7)(@playwright/test@1.61.1)(@types/node@25.9.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))
       monaco-editor:
         specifier: ^0.55.1
         version: 0.55.1
@@ -2095,8 +2094,8 @@ packages:
       '@types/react': '>=16'
       react: '>=16'
 
-  '@modelcontextprotocol/sdk@1.29.0':
-    resolution: {integrity: sha512-zo37mZA9hJWpULgkRpowewez1y6ML5GsXJPY8FI0tBBCd77HEvza4jDqRKOXgHNn867PVGCyTdzqpz0izu5ZjQ==}
+  '@modelcontextprotocol/sdk@1.30.0':
+    resolution: {integrity: sha512-xKd8OIzlqNzcqcNumGAa6g+PW2kjD5vrpcKOnfldAUPP3j7lnqMPwlTXQm8gF+UwH72z0lqaRbjr9hqGz0eITA==}
     engines: {node: '>=18'}
     peerDependencies:
       '@cfworker/json-schema': ^4.1.1
@@ -7652,7 +7651,7 @@ snapshots:
       '@types/react': 19.2.17
       react: 19.2.7
 
-  '@modelcontextprotocol/sdk@1.29.0(zod@4.4.3)':
+  '@modelcontextprotocol/sdk@1.30.0(zod@4.4.3)':
     dependencies:
       '@hono/node-server': 2.1.0(hono@4.13.1)
       ajv: 8.20.0
@@ -10423,9 +10422,9 @@ snapshots:
 
   math-intrinsics@1.1.0: {}
 
-  mcp-handler@1.1.0(@modelcontextprotocol/sdk@1.29.0(zod@4.4.3))(next@16.3.0-preview.5(@babel/core@7.29.7)(@playwright/test@1.61.1)(@types/node@25.9.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)):
+  mcp-handler@1.1.0(@modelcontextprotocol/sdk@1.30.0(zod@4.4.3))(next@16.3.0-preview.5(@babel/core@7.29.7)(@playwright/test@1.61.1)(@types/node@25.9.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)):
     dependencies:
-      '@modelcontextprotocol/sdk': 1.29.0(zod@4.4.3)
+      '@modelcontextprotocol/sdk': 1.30.0(zod@4.4.3)
       chalk: 5.6.2
       commander: 11.1.0
       redis: 4.7.1
