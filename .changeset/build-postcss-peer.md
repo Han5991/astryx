@@ -2,7 +2,7 @@
 '@astryxdesign/build': patch
 ---
 
-[fix] Declare `postcss` as an optional peer dependency of `@astryxdesign/build`, which the `./postcss` entry requires at load time
+[fix] Declare `postcss` as an optional peer dependency of `@astryxdesign/build`, which the `./postcss` entry requires at load time (#6372)
 @Han5991
 
 The PostCSS entry has required `postcss` since it was introduced, but the
