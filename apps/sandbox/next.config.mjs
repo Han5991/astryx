@@ -10,19 +10,14 @@ const require = createRequire(import.meta.url);
 /**
  * Locate lexical's built ESM entry for the alias below. `require.resolve`
  * lands on the CJS entry inside dist/, so walk up to the package root rather
- * than resolving `lexical/package.json` (not export-mapped). Returns null when
- * lexical isn't installed so the alias is simply omitted.
+ * than resolving `lexical/package.json` (not export-mapped).
  */
 function resolveLexicalDist() {
-  try {
-    let dir = path.dirname(require.resolve('lexical'));
-    while (path.basename(dir) !== 'lexical') {
-      dir = path.dirname(dir);
-    }
-    return path.join(dir, 'dist', 'Lexical.mjs');
-  } catch {
-    return null;
+  let dir = path.dirname(require.resolve('lexical'));
+  while (path.basename(dir) !== 'lexical') {
+    dir = path.dirname(dir);
   }
+  return path.join(dir, 'dist', 'Lexical.mjs');
 }
 
 /** @type {import('next').NextConfig} */
@@ -53,15 +48,12 @@ const nextConfig = {
     // Scoped by issuer (same shape as withAstryx's source-condition rule) so
     // only astryx-issued requests are pinned — everything else keeps normal
     // export-map resolution (e.g. Lexical.node.mjs in the server bundle).
-    const lexicalDist = resolveLexicalDist();
-    if (lexicalDist != null) {
-      config.module = config.module || {};
-      config.module.rules = config.module.rules || [];
-      config.module.rules.unshift({
-        test: /[\\/]node_modules[\\/]@astryxdesign[\\/]/,
-        resolve: {alias: {lexical$: lexicalDist}},
-      });
-    }
+    config.module = config.module || {};
+    config.module.rules = config.module.rules || [];
+    config.module.rules.unshift({
+      test: /[\\/]node_modules[\\/]@astryxdesign[\\/]/,
+      resolve: {alias: {lexical$: resolveLexicalDist()}},
+    });
 
     // Workarounds for Node v24+ where webpack's hashing/caching feeds
     // `undefined` to Hash.update and crashes the dev server.
