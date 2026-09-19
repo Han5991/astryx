@@ -2,12 +2,16 @@
 '@astryxdesign/build': patch
 ---
 
-[fix] Declare `postcss` as an optional peer dependency of `@astryxdesign/build`, which the `./postcss` entry requires at load time (#6372)
+[fix] Stop requiring packages `@astryxdesign/build` does not depend on, so the PostCSS and Vite entries work under strict installs (#6372)
 @Han5991
 
-The PostCSS entry has required `postcss` since it was introduced, but the
-package never declared it, so it resolved only where the installer happened to
-hoist a copy; strict installs such as Yarn Plug'n'Play refuse an undeclared
-require. It is a peer, as the PostCSS plugin guidelines ask, so the plugin works
-on the host's `postcss` AST rather than its own copy, and it is optional because
-the Babel, Vite and Next entries never load it.
+`./postcss` required `postcss`, and `./vite` required `lightningcss` and
+`browserslist`, without declaring any of them. They resolved only where the
+installer hoisted a copy. Under a strict install such as Yarn Plug'n'Play, the
+PostCSS entry failed to load, and the Vite entry quietly skipped its
+lightningcss pass, dropping the vendor prefixes StyleX had applied.
+
+The PostCSS entry now gives the host's postcss a CSS string to parse, so it
+needs no copy of its own. The Vite entry resolves lightningcss and browserslist
+from `@stylexjs/unplugin`, which depends on both, so it runs the same pass
+StyleX did.

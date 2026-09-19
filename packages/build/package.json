@@ -43,8 +43,7 @@
     "@stylexjs/babel-plugin": ">=0.18.0",
     "@babel/core": ">=7.0.0",
     "@stylexjs/unplugin": ">=0.18.0",
-    "vite": "catalog:",
-    "postcss": "^8.0.0"
+    "vite": "catalog:"
   },
   "dependencies": {
     "fast-glob": "^3.3.0",
@@ -57,9 +56,6 @@
   },
   "peerDependenciesMeta": {
     "@stylexjs/unplugin": {
-      "optional": true
-    },
-    "postcss": {
       "optional": true
     },
     "vite": {
