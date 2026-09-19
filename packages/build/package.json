@@ -43,7 +43,8 @@
     "@stylexjs/babel-plugin": ">=0.18.0",
     "@babel/core": ">=7.0.0",
     "@stylexjs/unplugin": ">=0.18.0",
-    "vite": "catalog:"
+    "vite": "catalog:",
+    "postcss": "^8.0.0"
   },
   "dependencies": {
     "fast-glob": "^3.3.0",
@@ -51,10 +52,14 @@
     "is-glob": "^4.0.0"
   },
   "devDependencies": {
+    "enhanced-resolve": "^5.21.6",
     "esbuild": "catalog:"
   },
   "peerDependenciesMeta": {
     "@stylexjs/unplugin": {
+      "optional": true
+    },
+    "postcss": {
       "optional": true
     },
     "vite": {
